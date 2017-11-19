@@ -12,6 +12,7 @@ $(document).ready(function(){
     $('#output').attr('src', '');
   });
 
+  // Tambah Calon
   $('#btn-simpan').click(function(){
     var n = $('#nama').val();
     var k = $('#kelas').val();
@@ -69,6 +70,7 @@ $(document).ready(function(){
 
   });
 
+  // Ubah data Calon
   $('#btn-ubah').click(function(){
     var n = $('#nama').val();
     var k = $('#kelas').val();
@@ -128,6 +130,7 @@ $(document).ready(function(){
 
   });
 
+  // Hapus Calon
   $("#btn-hapus").click(function(){ 
     
     var data = new FormData();
@@ -161,13 +164,14 @@ $(document).ready(function(){
     });
   });
 
+  // Hapus Semua Calon
   $('#hapusSemua').click(function(){
     $('#konfirmasi').html('Apakah anda yakin ingin menghapus semua data ini?');
     $('#btn-hapus').hide();
     $('#btn-hapusSemua').show();
     $('#load').hide();
   });
-
+  // Hapus Semua Calon
   $("#btn-hapusSemua").click(function(){ 
     
     var data = new FormData();
@@ -203,6 +207,7 @@ $(document).ready(function(){
   /*============*/
   /*====Data====*/
   /*============*/
+  // Upload Data Pemilih
   $('#btn-upload').click(function(){
     
     var file = $('#file').val();
@@ -255,6 +260,7 @@ $(document).ready(function(){
 
   });
 
+  // Hapus Semua Data Pemilih
   $('#load').hide();
   $("#btn-hapusData").click(function(){ 
     
@@ -290,69 +296,137 @@ $(document).ready(function(){
   /*============*/
   /*====Pilih===*/
   /*============*/
-  $('#form-login').submit(function(){
+  // Login
+  $('#btn-login').click(function(){
+    var nm = $('#nama').val();
+    var ns = $('#nis').val()
+    if (nm == '' || ns == '') {
+      swal("Oops...", "Nama dan NIS tidak boleh kosong!", "error");
+    }else{
+      var data = new FormData();
+      data.append('nama', $('#nama').val());
+      data.append('nis', $('#nis').val());
+      data.append('type', 'login');
+
+      $.ajax({
+        url         : 'ajax/pilih.php',
+        type        : 'POST',
+        data        : data,
+        processData : false,
+        contentType : false,
+        dataType    : 'json',
+        beforeSend  : function(e) {
+          if(e && e.overrideMimeType) {
+            e.overrideMimeType("application/json;charset=UTF-8");
+          }
+        },
+        success     : function(response){ 
+          if(response.status == "ada"){ 
+            document.location="index.php";
+          }else{ 
+            swal("Oops...", "Nama atau NIS anda salah / anda sudah memilih", "error");
+            return false;
+          }
+        },
+        error       : function (xhr, ajaxOptions, thrownError) {
+          alert("ERROR : "+xhr.responseText); 
+        }
+      });
+    }
+
+  });
+
+  // Proses Pilih
+  $('#btn-pilih').click(function(){
 
     var data = new FormData();
-    data.append('nama', $('#nama').val());
-    data.append('nis', $('#nis').val());
-    data.append('type', 'login');
+    data.append('id_calon', $('#id-calon').val());
+    data.append('type', 'pilih');
 
     $.ajax({
-      url        : 'ajax/pilih.php',
-      data       : data,
-      type       : 'POST',
-      processData: false,
-      contentType: false,
-      dataType   : "json",
-      beforeSend : function(e) {
+      url         : 'ajax/pilih.php',
+      type        : 'POST',
+      data        : data,
+      processData : false,
+      contentType : false,
+      dataType    : 'json',
+      beforeSend  : function(e) {
         if(e && e.overrideMimeType) {
           e.overrideMimeType("application/json;charset=UTF-8");
         }
       },
-      success    : function(response){
+      success     : function(response){ 
         if(response.status == "sukses"){ 
-          document.location="index.php";
+          swal({
+            title: "Good job!",
+            text: "Terima Kasih",
+            type:"success"
+          }, 
+          function(){
+            document.location='index.php';
+          });
         }else{ 
-          swal("Oops...", "Ada yang error!", "error");
+          swal("Oops...", "Ada yang Error!", "error");
+          return false;
         }
       },
-      error      : function (xhr, ajaxOptions, thrownError) { 
+      error       : function (xhr, ajaxOptions, thrownError) {
         alert("ERROR : "+xhr.responseText); 
       }
     });
 
   });
 
-  $('#btn-pilih').click(function(){
+  /*============*/
+  /*====Admin===*/
+  /*============*/
+  // Tambah Admin
+  $('#btn-tambahAdmin').click(function(){
+    var n = $('#nama').val();
+    var u = $('#user').val();
+    var p = $('#pass').val();
+    
+    if( n == '' || u == '' || u == '' ){
+      swal("Oops...", "Form tidak boleh kosong!", "error");
+    }else{
+      var data = new FormData();
 
-    var data = new FormData();
-    data.append('id', $('#data-id').val());
-    data.append('type', 'pilih');
+      data.append('nama', $('#nama').val());
+      data.append('user', $('#user').val());
+      data.append('pass', $('#pass').val());
+      data.append('mail', $('#mail').val());
 
-    $.ajax({
-      url        : 'ajax/pilih.php',
-      data       : data,
-      type       : 'POST',
-      processData: false,
-      contentType: false,
-      dataType   : "json",
-      beforeSend : function(e) {
-        if(e && e.overrideMimeType) {
-          e.overrideMimeType("application/json;charset=UTF-8");
+      data.append('type', 'insert');
+
+      $('#loading').show();
+      $.ajax({
+        url         : 'ajax/admin.php',
+        type        : 'POST',
+        data        : data,
+        processData : false,
+        contentType : false,
+        dataType    : 'json',
+        beforeSend  : function(e) {
+          if(e && e.overrideMimeType) {
+            e.overrideMimeType("application/json;charset=UTF-8");
+          }
+        },
+        success     : function(response){ 
+          $("#loading").hide(); 
+          
+          if(response.status == "sukses"){ 
+            $("#view-admin").html(response.html);
+            swal("Good job!", "Data berhasil disimpan", "success");
+            $("#form input").val(""); 
+          }else{ 
+            swal("Oops...", "Ada yang error!", "error");
+          }
+        },
+        error       : function (xhr, ajaxOptions, thrownError) {
+          alert("ERROR : "+xhr.responseText); 
         }
-      },
-      success    : function(response){
-        if(response.status == "sukses"){ 
-          swal("Good job!", "Terima kasih", "success");
-          document.location="index.php";
-        }else{ 
-          swal("Oops...", "Ada yang error!", "error");
-        }
-      },
-      error      : function (xhr, ajaxOptions, thrownError) { 
-        alert("ERROR : "+xhr.responseText); 
-      }
-    });
+      });
+    }
 
   });
 

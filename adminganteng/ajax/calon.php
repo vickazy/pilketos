@@ -3,16 +3,16 @@
 require_once '../../func/Database.php';
 require_once '../../func/Calon.php';
 
-$nama		    = @$_POST['nama'];
-$kelas		  = @$_POST['kelas'];
+$nama           = @$_POST['nama'];
+$kelas        = @$_POST['kelas'];
 $organisasi = @$_POST['organisasi'];
-$visi	 	    = @$_POST['visi'];
-$misi		    = @$_POST['misi'];
+$visi           = @$_POST['visi'];
+$misi           = @$_POST['misi'];
 
-$foto 	  = @$_FILES['foto']['name'];
+$foto     = @$_FILES['foto']['name'];
 $tmp      = @$_FILES['foto']['tmp_name'];
 $fotobaru = date('dmYHis').$foto;
-$path	    = '../../assets/img/Calon/'.$fotobaru;
+$path       = '../../assets/img/Calon/'.$fotobaru;
 
 if ( $_POST['type'] == 'insert' ) {
 
@@ -25,12 +25,12 @@ if ( $_POST['type'] == 'insert' ) {
 	  ob_end_clean();
 	  
 	  $response = array(
-	    'status'=>'sukses',
-	    'html'=>$html
+		'status'=>'sukses',
+		'html'=>$html
 	  );
 	}else{
 		$response = array(
-	    'status'=>'gagal'
+		'status'=>'gagal'
 	  );
 	}
 
@@ -51,12 +51,12 @@ if ( $_POST['type'] == 'insert' ) {
 		  ob_end_clean();
 		  
 		  $response = array(
-		    'status'=>'sukses',
-		    'html'=>$html
+			'status'=>'sukses',
+			'html'=>$html
 		  );
 		}else{
 			$response = array(
-		    'status'=>'gagal'
+			'status'=>'gagal'
 		  );
 		}
 	}else{
@@ -67,12 +67,12 @@ if ( $_POST['type'] == 'insert' ) {
 		  ob_end_clean();
 		  
 		  $response = array(
-		    'status'=>'sukses',
-		    'html'=>$html
+			'status'=>'sukses',
+			'html'=>$html
 		  );
 		}else{
 			$response = array(
-		    'status'=>'gagal'
+			'status'=>'gagal'
 		  );
 		}
 	}
@@ -92,8 +92,8 @@ if ( $_POST['type'] == 'insert' ) {
 	  ob_end_clean();
 	  
 	  $response = array(
-	    'status'=>'sukses',
-	    'html'=>$html
+		'status'=>'sukses',
+		'html'=>$html
 	  );
 	}
 
@@ -112,8 +112,8 @@ if ( $_POST['type'] == 'insert' ) {
 	  ob_end_clean();
 	  
 	  $response = array(
-	    'status'=>'sukses',
-	    'html'=>$html
+		'status'=>'sukses',
+		'html'=>$html
 	  );
 	}
 

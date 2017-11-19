@@ -6,43 +6,38 @@ require_once '../func/Calon.php';
 require_once '../func/Pilih.php';
 
 if ($_POST['type'] == 'login') {
+  
+  $nis  = $_POST['nis'];
+  $nama = $_POST['nama'];
 
-	$nama = @$_POST['nama'];
-	$nis  = trim(@$_POST['nis']);
-
-	if ( LoginUser($nama, $nis) ) {
-		$response = array(
-	    'status'=>'sukses'
-	  );
-	  $_SESSION['user'] = $nama;
-	}else{
-		$response = array(
-	    'status'=>'gagal'
-	  );
-	}
+  if (loginUser($nis, $nama)) {
+    $response = array(
+      'status'=>'ada'
+    );
+    $_SESSION['user'] = $nama;
+  }else{
+    $response = array(
+      'status'=>'tidak ada'
+    );
+  }
 
 }else if($_POST['type'] == 'pilih'){
 
-	$sesi = $_SESSION['user'];
-	$id   = $_POST['id'];
-
-	if(calonTampil()){
-		$suara = mysqli_fetch_assoc(calonTampil())['suara']+1;
-		if(TambahSuara($suara, $id)){
-			if(UbahStatus($sesi)){
-				Logout();
-
-				$response = array(
-			    'status'=>'sukses'
-			  );
-			}
-		}
-	}else{
-		$response = array(
-	    'status'=>'gagal'
-	  );
-	}
+  $id_calon  = $_POST['id_calon'];
+  $session = $_SESSION['user'];
+  
+  if(pilih($session, $id_calon)){
+    logout();
+    $response = array(
+      'status'=>'sukses'
+    );
+  }else{
+    $response = array(
+      'status'=>'gagal'
+    );
+  }
 
 }
+
 echo json_encode($response);
 ?>

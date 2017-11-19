@@ -55,7 +55,7 @@ require_once 'core/init.php';
               <li id="user">
               <?php 
                 $session = $_SESSION['user'];
-                $tampil = mysqli_fetch_assoc(TampilUser($session))
+                $tampil = mysqli_fetch_assoc(tampilUser($session))
               ?>
                 <b><?=$tampil['nama']; ?></b><br>
                 <i><?=$tampil['kelas']; ?></i>

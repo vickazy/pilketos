@@ -179,70 +179,47 @@ require_once '/core/init.php';
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
       <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="pull-right-container">
-                  <span class="label label-danger pull-right">70%</span>
-                </span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-            </a>
-          </li>
+        <h3 class="control-sidebar-heading">&nbsp;<b>Admin</b></h3>
+        <ul class="control-sidebar-menu" id="view-admin">
+          <?php include 'ajax/admin-view.php'; ?>
         </ul>
         <!-- /.control-sidebar-menu -->
 
       </div>
       <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
       <!-- Settings tab content -->
       <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">General Settings</h3>
+        <form method="post"  id="form">
+          <h3 class="control-sidebar-heading"><b>Tambah Admin</b></h3>
 
           <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Report panel usage
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              Some information about this general settings option
-            </p>
+            <label for="nama">Nama Lengkap *</label>
+            <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap" id="nama">
           </div>
-          <!-- /.form-group -->
-        </form>
+          <div class="form-group">
+            <label for="user">Username *</label>
+            <input type="text" class="form-control" name="user" placeholder="Username" id="user">
+          </div>
+          <div class="form-group">
+            <label for="pass">Password *</label>
+            <input type="password" class="form-control" name="pass" placeholder="Password" id="pass">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="mail@mail.com" id="mail">
+          </div>
+
+        </form><br>
+        <!-- /.form-group -->
+        <button type="button" class="btn btn-primary btn-flat" id="btn-tambahAdmin" style="float: left;">Tambah</button>
+        <div id="loading">&nbsp;&nbsp;&nbsp;Loading...</div>
       </div>
       <!-- /.tab-pane -->
     </div>
@@ -262,6 +239,8 @@ require_once '/core/init.php';
 <script src="../assets/js/jquery.easeScroll.js"></script>
 <!-- Script -->
 <script src="../assets/js/script.js"></script>
+<!-- Highchart -->
+<script src="../assets/js/highcharts.js"></script>
 
 </body>
 </html>

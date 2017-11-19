@@ -1,5 +1,62 @@
 <?php  
 
+// Login
+function loginUser($nis, $nama){
+	global $mysqli;
+
+	$query = "SELECT * FROM data WHERE nis='$nis' && nama='$nama' && status='0'";
+	if($result = $mysqli->query($query)){
+		if(mysqli_num_rows($result) != 0) return true;
+		else return false;
+	}
+}
+
+// Tampil Data User
+function tampilUser($session){
+	global $mysqli;
+
+	$query = "SELECT * FROM data WHERE nama='$session'";
+	$result = $mysqli->query($query);
+
+	return $result;
+}
+
+// Tampil Suara Sebelumnya
+function tampilSuara($id_calon){
+	global $mysqli;
+
+	$sql = "SELECT suara FROM calon WHERE id='$id_calon'";
+	$result = $mysqli->query($sql);
+	$suara = mysqli_fetch_assoc($result)['suara']+1;
+
+	return $suara;
+}
+
+// Proses pilih
+function pilih($session, $id_calon){
+	global $mysqli;
+
+	$session = $mysqli->real_escape_string($session);
+	$id_calon= $mysqli->real_escape_string($id_calon);
+
+	$id_user = mysqli_fetch_assoc(tampilUser($session))['id'];
+
+	$suara = tampilSuara($id_calon);
+
+	$query = "UPDATE data SET status='1' WHERE id='$id_user';";
+	$query .= "UPDATE calon SET suara='$suara' WHERE id='$id_calon'";
+	
+	$result = $mysqli->multi_query($query) or die(mysqli_error());
+
+	return $result;
+}
+
+// Logout
+function logout(){
+	unset($_SESSION['user']);
+}
+
+
 // Sudah Login
 function sudahLogin(){
 ?>
@@ -87,9 +144,9 @@ function sudahLogin(){
                 <div id="visi"></div>
               <b>MISI :</b>
                 <div id="misi"></div>
-          </div>
+          </div><br>
           <div class="col-sm-4">
-            <img src="" alt="" class="img-responsive" id="foto" style="height: 200px;">
+            <img src="" alt="" class="img-responsive" id="foto" style="height: 200px; margin: 0 auto;">
           </div>
         </div>
       </div>
@@ -108,7 +165,7 @@ function sudahLogin(){
         <h4 class="modal-title" id="myModalLabel">Konfirmasi</h4>
       </div>
       <div class="modal-body">
-        <input type="hidden" id="data-id">
+        <input type="hidden" id="id-calon">
         <div>Apakah Anda yakin ingin memilihnya?</div>
       </div>
       <div class="modal-footer">
@@ -139,7 +196,7 @@ function detail(no) {
 function pilih(no){
 	var id = $('#id-val-'+no).val();
 
-	$('#data-id').val(id);
+	$('#id-calon').val(id);
 }
 </script>
 
@@ -181,64 +238,16 @@ function belumLogin(){
             <input type="password" class="form-control" placeholder="NIS" id="nis">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-          <div class="row">
-            <div class="col-xs-6 col-sm-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
-            </div>
-          </div>
         </form>
+        <div class="row">
+          <div class="col-xs-6 col-sm-4">
+            <button type="button" class="btn btn-primary btn-block btn-flat" id="btn-login">Login</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <?php
 }
-
-function LoginUser($nama, $nis){
-	global $mysqli;
-
-	$query = "SELECT * FROM data WHERE nama='$nama' && nis='$nis' && status=0";
-	if($result = $mysqli->query($query)){
-		if(mysqli_num_rows($result) != 0) return true;
-		else return false;
-	}
-}
-
-function TampilUser($session){
-	global $mysqli;
-
-	$query = "SELECT * FROM data WHERE nama='$session'";
-	$result = $mysqli->query($query);
-
-	return $result;
-}
-
-function TambahSuara($suara, $id){
-	global $mysqli;
-
-	$sql = $mysqli->prepare("UPDATE calon SET suara=? WHERE id=?");
-	$sql->bind_param('ii', $suara, $id);
-
-	return $sql->execute();
-}
-
-function UbahStatus($sesi){
-	global $mysqli;
-
-	// $sql = $mysqli->prepare("UPDATE data SET status=? WHERE nama=?");
-	// $sql->bind_param('is', '1', $sesi);
-
-	// return $sql->execute();
-
-	$query = "UPDATE data SET status=1 WHERE nama='$sesi'";
-	$result = $mysqli->query($result);
-
-	return $result;
-
-}
-
-function Logout(){
-	unset($_SESSION['user']);
-}
-
 ?>
