@@ -3,11 +3,11 @@
 require_once '../../func/Database.php';
 require_once '../../func/Calon.php';
 
-$nama           = @$_POST['nama'];
-$kelas        = @$_POST['kelas'];
+$nama       = @$_POST['nama'];
+$kelas      = @$_POST['kelas'];
 $organisasi = @$_POST['organisasi'];
-$visi           = @$_POST['visi'];
-$misi           = @$_POST['misi'];
+$visi       = @$_POST['visi'];
+$misi       = @$_POST['misi'];
 
 $foto     = @$_FILES['foto']['name'];
 $tmp      = @$_FILES['foto']['tmp_name'];
@@ -20,18 +20,18 @@ if ( $_POST['type'] == 'insert' ) {
 		move_uploaded_file($tmp, $path);
 
 		ob_start();
-	  include "calon-view.php";
-	  $html = ob_get_contents();
-	  ob_end_clean();
-	  
-	  $response = array(
+		include "calon-view.php";
+		$html = ob_get_contents();
+		ob_end_clean();
+		
+		$response = array(
 		'status'=>'sukses',
 		'html'=>$html
-	  );
+		);
 	}else{
 		$response = array(
 		'status'=>'gagal'
-	  );
+		);
 	}
 
 }else if( $_POST['type'] == 'update' ) {
@@ -46,34 +46,34 @@ if ( $_POST['type'] == 'insert' ) {
 			move_uploaded_file($tmp, $path);
 
 			ob_start();
-		  include "calon-view.php";
-		  $html = ob_get_contents();
-		  ob_end_clean();
-		  
-		  $response = array(
+			include "calon-view.php";
+			$html = ob_get_contents();
+			ob_end_clean();
+			
+			$response = array(
 			'status'=>'sukses',
 			'html'=>$html
-		  );
+			);
 		}else{
 			$response = array(
 			'status'=>'gagal'
-		  );
+			);
 		}
 	}else{
 		if (calonEdit2($nama, $kelas, $organisasi, $visi, $misi, $_id)) {
 			ob_start();
-		  include "calon-view.php";
-		  $html = ob_get_contents();
-		  ob_end_clean();
-		  
-		  $response = array(
+			include "calon-view.php";
+			$html = ob_get_contents();
+			ob_end_clean();
+			
+			$response = array(
 			'status'=>'sukses',
 			'html'=>$html
-		  );
+			);
 		}else{
 			$response = array(
 			'status'=>'gagal'
-		  );
+			);
 		}
 	}
 
@@ -87,14 +87,14 @@ if ( $_POST['type'] == 'insert' ) {
 		if(is_file($file)) unlink($file);
 
 		ob_start();
-	  include "calon-view.php";
-	  $html = ob_get_contents();
-	  ob_end_clean();
-	  
-	  $response = array(
+		include "calon-view.php";
+		$html = ob_get_contents();
+		ob_end_clean();
+		
+		$response = array(
 		'status'=>'sukses',
 		'html'=>$html
-	  );
+		);
 	}
 
 }else if( $_POST['type'] == 'deleteAll' ){
@@ -107,14 +107,14 @@ if ( $_POST['type'] == 'insert' ) {
 		}
 
 		ob_start();
-	  include "calon-view.php";
-	  $html = ob_get_contents();
-	  ob_end_clean();
-	  
-	  $response = array(
+		include "calon-view.php";
+		$html = ob_get_contents();
+		ob_end_clean();
+		
+		$response = array(
 		'status'=>'sukses',
 		'html'=>$html
-	  );
+		);
 	}
 
 }

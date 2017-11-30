@@ -62,9 +62,9 @@
             </div>
             <div class="form-group">
               <label for="foto">foto</label>
-              <input type="file" class="form-control" id="foto" name="foto" onchange="loadFile(event);">
+              <input type="file" class="form-control" id="foto" name="foto">
               <br>
-              <img src="" class="img-responsive" style="height: 150px;" id="output" alt="
+              <img src="" class="img-responsive" style="height: 150px;" id="preview" alt="
                 Ukuran foto 3x4. dengan format JPG. ukuran file Pasfoto tidak boleh lebih dari 1MB
               ">
             </div>

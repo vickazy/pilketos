@@ -2,6 +2,10 @@
 
 require_once '/core/init.php';
 
+if(!isset($_SESSION['admin'])){
+  header('Location: login.php');
+}else{
+
 ?>
 
 <!DOCTYPE html>
@@ -75,14 +79,14 @@ require_once '/core/init.php';
 							<!-- The user image in the navbar-->
 							<img src="../assets/img/avatar.jpg" class="user-image" alt="User Image">
 							<!-- hidden-xs hides the username on small devices so only the image appears. -->
-							<span class="hidden-xs">Administrator</span>
+							<span class="hidden-xs"><?php echo adminTampilSession($_SESSION['admin']); ?></span>
 						</a>
 						<ul class="dropdown-menu">
 							<!-- The user image in the menu -->
 							<li class="user-header">
 								<img src="../assets/img/avatar.jpg" class="img-circle" alt="User Image">
 								<p>
-									Administrator
+									<?php echo adminTampilSession($_SESSION['admin']); ?>
 									<small><i class="fa fa-circle text-success"></i> Online</small>
 								</p>
 							</li>
@@ -92,7 +96,15 @@ require_once '/core/init.php';
 									<a href="#" data-toggle="control-sidebar" class="btn btn-default btn-flat">Profile</a>
 								</div>
 								<div class="pull-right">
-									<a href="#" class="btn btn-default btn-flat">Sign out</a>
+								<form action="" method="post">
+									<input type="submit" name="out" value="Sign Out" class="btn btn-default btn-flat">
+								</form>
+									<?php  
+										if(isset($_POST['out'])){
+											unset($_SESSION['admin']);
+											header("Location:".$_SERVER['PHP_SELF']);
+										}
+									?>
 								</div>
 							</li>
 						</ul>
@@ -117,7 +129,9 @@ require_once '/core/init.php';
 					<img src="../assets/img/avatar.jpg" class="img-circle" alt="User Image">
 				</div>
 				<div class="pull-left info">
-					<p>Alexander Pierce</p>
+					<p>
+						<?php echo adminTampilSession($_SESSION['admin']); ?>
+					</p>
 					<!-- Status -->
 					<a><i class="fa fa-circle text-success"></i> Online</a>
 				</div>
@@ -136,9 +150,6 @@ require_once '/core/init.php';
 				<li id="data">
 					<a href="?p=data_pemilih"><i class="fa fa-table"></i> <span>Data Pemilih</span></a>
 				</li>
-				<li id="laporan">
-					<a href="?p=laporan"><i class="fa fa-file"></i> <span>Laporan</span></a>
-				</li>
 			</ul>
 			<!-- /.sidebar-menu -->
 		</section>
@@ -156,7 +167,6 @@ require_once '/core/init.php';
 	else if($p == 'dashboard')include 'pages/Dashboard.php';
 	else if($p == 'calon')include 'pages/Calon.php';
 	else if($p == 'data_pemilih')include 'pages/Data_pemilih.php';
-	else if($p == 'laporan')include 'pages/Laporan.php';
 	else include 'pages/404.php';
 
 	?>
@@ -179,8 +189,8 @@ require_once '/core/init.php';
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user-plus"></i></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -189,6 +199,13 @@ require_once '/core/init.php';
         <h3 class="control-sidebar-heading">&nbsp;<b>Admin</b></h3>
         <ul class="control-sidebar-menu" id="view-admin">
           <?php include 'ajax/admin-view.php'; ?>
+          <li>
+          	<a href="javascript:void(0)">
+	          	<form action="" method="post">
+								<input type="submit" name="out" value="Sign Out" class="btn btn-danger btn-flat">
+							</form>
+						</a>
+          </li>
         </ul>
         <!-- /.control-sidebar-menu -->
 
@@ -196,12 +213,12 @@ require_once '/core/init.php';
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
       <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post"  id="form">
+        <form method="post"  id="formtambah">
           <h3 class="control-sidebar-heading"><b>Tambah Admin</b></h3>
-
+					<small>* wajib diisi!!</small>
           <div class="form-group">
             <label for="nama">Nama Lengkap *</label>
-            <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap" id="nama">
+            <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap" id="namaAdmin">
           </div>
           <div class="form-group">
             <label for="user">Username *</label>
@@ -219,7 +236,7 @@ require_once '/core/init.php';
         </form><br>
         <!-- /.form-group -->
         <button type="button" class="btn btn-primary btn-flat" id="btn-tambahAdmin" style="float: left;">Tambah</button>
-        <div id="loading">&nbsp;&nbsp;&nbsp;Loading...</div>
+        <div id="loadingTambah">&nbsp;&nbsp;&nbsp;Loading...</div>
       </div>
       <!-- /.tab-pane -->
     </div>
@@ -229,18 +246,103 @@ require_once '/core/init.php';
   <div class="control-sidebar-bg"></div>
 
 </div>
-<!-- ./wrapper -->
+<!-- ./wrapper --> 
+
+<!-- Modal -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Form Ubah Data</h4>
+        <img src="../assets/img/loading.gif" alt="" id="loadingUbah" style="height: 45px;">
+      </div>
+      <div class="modal-body">
+        <form method="post" id="formubah">
+        	<input type="hidden" id="idAdmin">
+					<div class="form-group">
+						<label for="">Nama</label>
+						<input class="form-control" type="text" id="nameAdmin" placeholder="Nama">
+					</div>
+					<div class="form-group">
+						<label for="">Username</label>
+						<input class="form-control" type="text" id="username" placeholder="Username">
+					</div>
+					<div class="form-group">
+						<label for="">Password lama</label>
+						<input class="form-control" type="password" id="passwordlama" placeholder="Password lama">
+					</div>
+					<div class="form-group">
+						<label for="">Password baru</label>
+						<input class="form-control" type="password" id="passwordbaru" placeholder="Password baru">
+					</div>
+					<div class="form-group">
+						<label for="">Password baru verifikasi</label>
+						<input class="form-control" type="password" id="passwordverif" placeholder="Password baru">
+						<small id="passSalah">Password Verifikasi salah!</small>
+					</div>
+					<div class="form-group">
+						<label for="">Email</label>
+						<input class="form-control" type="email" id="email" placeholder="Email">
+					</div>
+				</form>
+      </div>
+      <div class="modal-footer">
+	      <button type="button" class="btn btn-primary btn-flat" id="btn-ubahAdmin">Ubah</button>
+        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hapus">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Konfirmasi</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="id-val">
+        <div>Apakah anda yakin ingin menghapus data ini?</div>
+        <img src="../assets/img/loading.gif" alt="" id="loadingHapus" style="height: 45px;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-flat" id="btn-hapusAdmin">Ya</button>
+        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Tidak</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.Modal -->
 
 <!-- Sweet Alert -->
 <script src="../assets/js/sweetalert.min.js"></script>
+<!-- TinyMCE -->
+<script src="../assets/tinymce/tinymce.min.js"></script>
 <!-- Ajax -->
 <script src="../assets/js/ajax.js"></script>
+<!-- Highchart -->
+<script src="../assets/js/highcharts.js"></script>
 <!-- jQuery easeScroll -->
 <script src="../assets/js/jquery.easeScroll.js"></script>
 <!-- Script -->
 <script src="../assets/js/script.js"></script>
-<!-- Highchart -->
-<script src="../assets/js/highcharts.js"></script>
+<script>
+
+	$(document).ready(function(){
+		// easeScroll
+		$("html").easeScroll();
+	});
+
+</script>
 
 </body>
 </html>
+<?php 
+}
+?>

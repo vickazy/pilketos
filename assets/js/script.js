@@ -22,20 +22,38 @@ $(document).ready(function(){
 	else if( page == 'data_pemilih' )$('#data').attr('class', 'active');
 	else if( page == 'laporan' )$('#laporan').attr('class', 'active');
 
-	// Preview 
-	var loadFile = function(event) {
-		var reader = new FileReader();
-			reader.onload = function(){
-				var output = document.getElementById('output');
-				output.src = reader.result;
-			};
-		reader.readAsDataURL(event.target.files[0]);
-	};
-
-	// easeScroll
-	$('html').easeScroll();
-
+	// Load Dashboard
 	$('#view-dashboard').load('ajax/dashboard-view.php');
 
-	
+	$('#passSalah').hide();
+	$('#passwordverif').focus(function(){
+		$(this).css('border-color', '#d2d6de');
+		$('#passSalah').hide();
+	});
+
+	// TinyMCE
+	tinymce.init({
+		selector:"textarea",
+		menubar: false,
+	    plugins: ["preview wordcount advlist autolink lists link image charmap preview pagebreak searchreplace insertdatetime, fullscreen hr , table,  directionality, emoticons, textcolor, colorpicker, textpattern, code"],
+	    toolbar: "undo redo | fontselect fontsizeselect | styleselect | bullist numlist | forecolor backcolor emoticons | preview wordcount",
+	    convert_urls: false,
+	    theme_advanced_font_sizes : "8px,10px,12px,14px,16px,18px,20px,24px,32px,36px",
+	});
+
+	// Preview Image Before Upload
+	function readURL(input) {
+		if(input.files && input.files[0]){
+			var reader = new FileReader();
+			reader.onload = function(e){
+				$('#preview').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	$('#foto').change(function(){
+		readURL(this);
+	});
+
 });

@@ -7,7 +7,7 @@
   Real time
   <div class="btn-group" id="realtime" data-toggle="btn-toggle">
     <button type="button" class="btn btn-default btn-xs" data-toggle="on" onclick="start()">On</button>
-    <button type="button" class="btn btn-default btn-xs" data-toggle="off" onclick="clearInterval(realtime)">Off</button>
+    <button type="button" class="btn btn-default btn-xs active" data-toggle="off" onclick="clearInterval(realtime)">Off</button>
   </div>
   <div id="box"></div>
   <ol class="breadcrumb">

@@ -74,8 +74,8 @@ function edit(no) {
   $('#nama').val(nama);
   $('#kelas').val(kelas);
   $('#organisasi').val(organisasi);
-  $('#visi').val(visi);
-  $('#misi').val(misi);
+  tinymce.get('visi').setContent(visi);
+  tinymce.get('misi').setContent(misi);
   $('#foto').val('');
 
   $('#data-id').val(id);
