@@ -16,6 +16,14 @@ foreach (adminTampil() as $data) {
 	</a>
 </li>
 
+<li>
+	<a href="javascript:void(0)">
+	  	<form action="" method="post">
+			<input type="submit" name="out" value="Sign Out" class="btn btn-danger btn-flat">
+		</form>
+	</a>
+</li>
+
 <div class="collapse pull-right" id="<?=$no; ?>">
 	<button class="btn btn-primary btn-flat btn-xs" data-toggle="modal" data-target="#edit" onclick="editAdmin(<?=$no; ?>)">
 		<i class="fa fa-edit"></i>&nbsp;Edit

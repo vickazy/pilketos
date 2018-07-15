@@ -15,9 +15,9 @@ require_once 'core/init.php';
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/css/AdminLTE.min.css">
-    <!-- Style.css -->
+    <!-- Styles -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Sweet Alert -->
+    <!-- SweetAlert -->
     <link rel="stylesheet" href="assets/css/sweetalert.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,8 +57,8 @@ require_once 'core/init.php';
                 $session = $_SESSION['user'];
                 $tampil = mysqli_fetch_assoc(tampilUser($session))
               ?>
-                <b><?=$tampil['nama']; ?></b><br>
-                <i><?=$tampil['kelas']; ?></i>
+                <b style="text-transform: uppercase;"><?=$tampil['nama']; ?></b><br>
+                <i style="text-transform: uppercase;"><?=$tampil['kelas']; ?></i>
               </li>
             <?php } ?>
           </ul>

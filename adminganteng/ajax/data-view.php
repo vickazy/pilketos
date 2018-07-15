@@ -16,8 +16,8 @@
     <tr>
       <td><?=$no ?></td>
       <td><?=$data['nis']; ?></td>
-      <td><?=$data['nama']; ?></td>
-      <td><?=$data['kelas']; ?></td>
+      <td style="text-transform: uppercase;"><?=$data['nama']; ?></td>
+      <td style="text-transform: uppercase;"><?=$data['kelas']; ?></td>
       <td>
         <?php  
           if ($data['status'] == 0) {

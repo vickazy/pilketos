@@ -1,6 +1,6 @@
 <?php  
 
-require_once '/core/init.php';
+require_once 'core/init.php';
 
 if(!isset($_SESSION['admin'])){
   header('Location: login.php');
@@ -56,7 +56,7 @@ if(!isset($_SESSION['admin'])){
 	<header class="main-header">
 
 		<!-- Logo -->
-		<a href="http://localhost/github/pilketos/adminganteng/" class="logo">
+		<a href="" class="logo">
 			<!-- mini logo for sidebar mini 50x50 pixels -->
 			<span class="logo-mini"><b>A</b>LT</span>
 			<!-- logo for regular state and mobile devices -->
@@ -199,13 +199,6 @@ if(!isset($_SESSION['admin'])){
         <h3 class="control-sidebar-heading">&nbsp;<b>Admin</b></h3>
         <ul class="control-sidebar-menu" id="view-admin">
           <?php include 'ajax/admin-view.php'; ?>
-          <li>
-          	<a href="javascript:void(0)">
-	          	<form action="" method="post">
-								<input type="submit" name="out" value="Sign Out" class="btn btn-danger btn-flat">
-							</form>
-						</a>
-          </li>
         </ul>
         <!-- /.control-sidebar-menu -->
 
